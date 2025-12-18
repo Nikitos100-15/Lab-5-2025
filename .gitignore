@@ -1,5 +1,13 @@
-# Default ignored files
-/shelf/
-/.idea/workspace.xml
-# Editor-based HTTP Client requests
-/httpRequests/
+# IDE
+.idea/
+*.iml
+
+out/
+build/
+*.class
+*.log
+*.bin
+*.txt
+
+.DS_Store
+Thumbs.db
