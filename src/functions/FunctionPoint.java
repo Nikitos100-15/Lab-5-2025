@@ -45,22 +45,25 @@ public class FunctionPoint implements Serializable {
     public String toString() {
         return "(" + x +"," + y +")"; // возвращает текстовое описание точки
     }
+    // equals
     public boolean equals(Object o) {
-        // проверяем, чтобы не был передан null
-        if (o == null) return false;
-        // приводим Object к FunctionPoint
-        FunctionPoint var = (FunctionPoint) o;
-        double epsilon = 1e-10;
-        return Math.abs(x - var.x) < epsilon && Math.abs(y - var.y) < epsilon;}
-    public int hashCode() {
-        // приводим в 64-битное представление
-        long x_dbits = Double.doubleToLongBits(x);
-        long y_dbits= Double.doubleToLongBits(y);
+        // проверка на тот же объект
+        if (this == o) return true;
+        // проверка на null
+        if (o == null ) return false;
+        FunctionPoint that = (FunctionPoint) o;
 
-        int  x_hash= (int)(x_dbits ^ (x_dbits >>> 32));
-        int y_hash = (int)(y_dbits ^ (y_dbits >>> 32));
-        //  с помощью ^ смешивает по 32 бита с каждого элемента
-        return x_hash ^ y_hash; }
+        // Double.compare()
+        return (Double.compare(that.x, x) == 0 && Double.compare(that.y, y) == 0);
+    }
+    // hashCode
+    public int hashCode() {
+        int result = 17;
+        //Double.hashCode()
+        result = 31 * result + Double.hashCode(x);
+        result = 31 * result + Double.hashCode(y);
+        return result;
+    }
     // метод clone():
     public Object clone() throws CloneNotSupportedException {
         // возвращаем объект-копию для объекта точки

@@ -1,5 +1,6 @@
 package functions;
 
+import functions.meta.*;
 public class Functions {
 
     // проверка одной функции(взял такую же идею, что использовал с интернета, чтобы не и так усугублять код)
@@ -22,7 +23,7 @@ public class Functions {
         }
     }
 
-    // основные методы 5 ЗАДАНИЯ, используются методы из пакета functions.meta
+    // основные методы, используются методы из пакета functions.meta
     public static Function shift(Function f, double shiftX, double shiftY) {
         checkFunction(f);  // ← Теперь одна строка!
         return new Shift(f, shiftX, shiftY);

@@ -502,41 +502,20 @@ public class LinkedListTabulatedFunction implements TabulatedFunction, Serializa
     }
 
     public boolean equals(Object o) {
-        if (o == null) return false;
+        if (this == o) return true;
         // проверка на табулированную функцию
-        if (!(o instanceof TabulatedFunction))
-            return false;
-        TabulatedFunction o1 = (TabulatedFunction) o;
+        if (!(o instanceof TabulatedFunction)) return false;
+
+        TabulatedFunction that = (TabulatedFunction) o;
         // сравниваем точки
-        final double EPSILON = 1e-10;
+        if (this.getPointsCount() != that.getPointsCount()) return false;
 
-        if (o instanceof LinkedListTabulatedFunction) {
-            // оптимизация: прямой обход двух списков
-            LinkedListTabulatedFunction another_sheet = (LinkedListTabulatedFunction) o;
-            FunctionNode node1 = this.head.getNext();
-            FunctionNode node2 = another_sheet.head.getNext();
-            while (node1 != head) {
-                FunctionPoint p1 = node1.getPoint();
-                FunctionPoint p2 = node2.getPoint();
-
-                if (Math.abs(p1.getX() - p2.getX()) >= EPSILON || Math.abs(p1.getY() - p2.getY()) >= EPSILON) {
-                    return false;
-                }
-                node1 = node1.getNext();
-                node2 = node2.getNext();
+        // сравнение точкам через equals - делегируем
+        for (int i = 0; i < pointsCount; i++) {
+            if (!this.getPoint(i).equals(that.getPoint(i))) {
+                return false;
             }
         }
-        else {
-            // общий случай: через getPoint()
-            for (int i = 0; i < pointsCount; i++) {
-                FunctionPoint point = this.getPoint(i);
-                FunctionPoint another_point = o1.getPoint(i);
-                if (Math.abs(point.getX() - another_point.getX()) >= EPSILON || Math.abs(point.getY() - another_point.getY()) >= EPSILON) {
-                    return false;
-                }
-            }
-        }
-        return true; // возвращаем true в случае если ничего не сработает
+        return true;
     }
-
 }

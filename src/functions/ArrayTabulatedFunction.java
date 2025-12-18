@@ -277,35 +277,19 @@ public class ArrayTabulatedFunction implements TabulatedFunction, Serializable {
         return result; // возвращаем итоговую строку
     }
     public boolean equals(Object o) {
-        if (o == null) return false;
+        if (this == o) return true;
         // проверка на табулированную функцию
-        if (!(o instanceof TabulatedFunction))
-            return false;
-        TabulatedFunction o1 = (TabulatedFunction) o;
+        if (!(o instanceof TabulatedFunction)) return false;
+        TabulatedFunction that = (TabulatedFunction) o;
         // проверяем количество точек
-        if (this.getPointsCount() != o1.getPointsCount()) {
-            return false;
-        }
-        // сравниваем точки
-        final double EPSILON = 1e-10;
-        if (o instanceof ArrayTabulatedFunction) {
-            ArrayTabulatedFunction arr = (ArrayTabulatedFunction) o;
-            for (int i = 0; i < pointsCount; i++) {
-                if (Math.abs(points[i].getX() - arr.points[i].getX()) >= EPSILON || Math.abs(points[i].getY() - arr.points[i].getY()) >= EPSILON) {
-                    return false;
-                }
-            }
-        }
-        else {
-            for (int i = 0; i < pointsCount; i++) {
-                FunctionPoint point = this.getPoint(i);
-                FunctionPoint otherPoint = o1.getPoint(i);
-                if (Math.abs(point.getX() - otherPoint.getX()) >= EPSILON || Math.abs(point.getY() - otherPoint.getY()) >= EPSILON) {
-                    return false;
-                }
-            }
-        }
+        if (this.getPointsCount() != that.getPointsCount()) return false;
 
+        // сравнение точкам через  equals - т.е. делегируем
+        for (int i = 0; i < pointsCount; i++) {
+            if (!this.getPoint(i).equals(that.getPoint(i))) {
+                return false;
+            }
+        }
         return true;
     }
     public int hashCode() {
