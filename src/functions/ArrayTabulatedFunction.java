@@ -278,16 +278,24 @@ public class ArrayTabulatedFunction implements TabulatedFunction, Serializable {
     }
     public boolean equals(Object o) {
         if (this == o) return true;
-        // проверка на табулированную функцию
+        // проверка на табулированню функцию
         if (!(o instanceof TabulatedFunction)) return false;
         TabulatedFunction that = (TabulatedFunction) o;
-        // проверяем количество точек
+        // количество точек
         if (this.getPointsCount() != that.getPointsCount()) return false;
-
-        // сравнение точкам через  equals - т.е. делегируем
-        for (int i = 0; i < pointsCount; i++) {
-            if (!this.getPoint(i).equals(that.getPoint(i))) {
-                return false;
+        if (o instanceof ArrayTabulatedFunction) {
+            ArrayTabulatedFunction other = (ArrayTabulatedFunction) o;
+            // прямой доступ к массиву точек
+            for (int i = 0; i < pointsCount; i++) {
+                if (!this.points[i].equals(other.points[i])) {
+                    return false;
+                }
+            }
+        } else {
+            for (int i = 0; i < pointsCount; i++) {
+                if (!this.getPoint(i).equals(that.getPoint(i))) {
+                    return false;
+                }
             }
         }
         return true;

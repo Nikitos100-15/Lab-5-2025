@@ -502,20 +502,36 @@ public class LinkedListTabulatedFunction implements TabulatedFunction, Serializa
     }
 
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (o == null) return false;
         // проверка на табулированную функцию
-        if (!(o instanceof TabulatedFunction)) return false;
-
-        TabulatedFunction that = (TabulatedFunction) o;
-        // сравниваем точки
-        if (this.getPointsCount() != that.getPointsCount()) return false;
-
-        // сравнение точкам через equals - делегируем
-        for (int i = 0; i < pointsCount; i++) {
-            if (!this.getPoint(i).equals(that.getPoint(i))) {
-                return false;
+        if (!(o instanceof TabulatedFunction))
+            return false;
+        TabulatedFunction o1 = (TabulatedFunction) o;
+        // проверяем количество точек
+        if (this.getPointsCount() != o1.getPointsCount()) {
+            return false;
+        }
+        if (o instanceof LinkedListTabulatedFunction) {
+            // оптимизация: прямой обход двух списков
+            LinkedListTabulatedFunction another_sheet = (LinkedListTabulatedFunction) o;
+            FunctionNode node1 = this.head.getNext();
+            FunctionNode node2 = another_sheet.head.getNext();
+            while (node1 != head) {
+                if (!node1.getPoint().equals(node2.getPoint())) {//делегирванеи
+                    return false;
+                }
+                node1 = node1.getNext();
+                node2 = node2.getNext();
             }
         }
-        return true;
+        else {
+            // общий случай: через getPoint()
+            for (int i = 0; i < pointsCount; i++) {
+                if (!this.getPoint(i).equals(o1.getPoint(i))) { // делегирование
+                    return false;
+                }
+            }
+        }
+        return true; // возвращаем true в случае если ничего не сработает
     }
 }
